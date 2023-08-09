@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { type ReactElement } from 'react'
+import {
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query'
 
-function App() {
-  const [count, setCount] = useState(0)
+import InsurancePage from './pages/insurance-page'
+
+import {
+  type UserInfoField
+} from './common/validation-schemas/user-info-schema'
+
+export interface UserInfoFormBody {
+  [UserInfoField.NAME]: string
+  [UserInfoField.BIRTHDAY]: string
+  [UserInfoField.CITY]: string
+  [UserInfoField.VEHICLE_POWER]: number
+  [UserInfoField.VOUCHER]?: number
+  [UserInfoField.PRICE_MATCH]?: number
+}
+
+export enum Discount {
+  Commercial = 'commercial',
+  Agents = 'agents',
+  Summer = 'summer',
+  StrongCar = 'strong_car'
+}
+
+export enum Coverage {
+  BonusProtection = 'bonus_protection',
+  AOPlus = 'ao_plus',
+  GlassCoverage = 'glass_coverage'
+}
+
+const App: React.FC = (): ReactElement => {
+  const queryClient = new QueryClient()
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <QueryClientProvider client={queryClient}>
+     <InsurancePage />
+    </QueryClientProvider>
   )
 }
 
